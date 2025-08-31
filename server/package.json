@@ -7,7 +7,8 @@
     "build": "tsc -b",
     "start": "npm run build && node dist/app.js",
     "dev": "npm run build && npm run start",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^6.2.1",
