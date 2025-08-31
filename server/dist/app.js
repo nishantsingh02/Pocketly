@@ -25,11 +25,11 @@ const path_1 = __importDefault(require("path"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const allowedOrigins = [
-    "https://personal-expense-tracker-kohl.vercel.app",
-    "https://personal-expense-tracker-xi.vercel.app",
+    "https://pocketly-mauve.vercel.app",
+    "https://pocketly-server.vercel.app",
+    "https://pocketly.onrender.com",
     "http://localhost:3000",
-    "http://localhost:5173",
-    "https://100xpay.vercel.app"
+    "http://localhost:5173"
 ];
 // Middleware
 app.use((0, cors_1.default)({
