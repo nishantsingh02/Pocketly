@@ -24,26 +24,9 @@
     }
   ],
   "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
         {
           "key": "Cross-Origin-Opener-Policy",
           "value": "unsafe-none"
-        },
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "https://pocketguard-beta.vercel.app"
-        },
-        {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET, POST, PUT, DELETE, OPTIONS, PATCH"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type, Authorization"
         }
       ]
-    }
-  ]
 }

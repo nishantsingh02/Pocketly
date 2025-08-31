@@ -33,7 +33,7 @@
         },
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "https://pocketguard-beta.vercel.app"
+          "value": "https://pocketly-mauve.vercel.app"
         },
         {
           "key": "Access-Control-Allow-Methods",
