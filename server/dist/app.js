@@ -25,7 +25,7 @@ const path_1 = __importDefault(require("path"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const allowedOrigins = [
-    "https://pocketly-mauve.vercel.app",
+    "https://pocketguard-beta.vercel.app",
     "https://pocketly-server.vercel.app",
     "https://pocketly.onrender.com",
     "http://localhost:3000",
@@ -48,6 +48,12 @@ app.get('/api/health', (req, res) => {
         database: (0, exports.isDatabaseConnected)() ? 'Connected' : 'Not connected'
     });
 });
+
+app.get("/", function(req,res){
+    res.json({
+        msg: "server is running fine!"
+    })
+})
 // Routes
 app.use('/api/auth', auth_1.default);
 app.use("/api", expenseRoutes_1.default);

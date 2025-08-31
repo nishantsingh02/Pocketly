@@ -12,7 +12,7 @@ dotenv.config();
 
 const app = express();
 const allowedOrigins = [
-  "https://pocketly-mauve.vercel.app",
+  "https://pocketguard-beta.vercel.app",
   "https://pocketly-server.vercel.app",
   "https://pocketly.onrender.com",
   "http://localhost:3000",
