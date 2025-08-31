@@ -12,7 +12,8 @@ export default function DashboardHeader() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   // const { isAuthenticated, user, logout } = useAuth();
   const { isAuthenticated, logout } = useAuth();
-
+  
+  const easeIn = cubicBezier(0.42, 0, 1, 1);
   const easeOut = cubicBezier(0.25, 1, 0.5, 1);
   const easeInOut = cubicBezier(0.42, 0, 0.58, 1);
 

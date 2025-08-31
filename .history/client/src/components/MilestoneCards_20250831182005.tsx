@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence, cubicBezier } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Plus, CheckCircle, Edit, Trash2, ChevronRight, Target, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "../contexts/AuthContext";
@@ -113,7 +113,7 @@ export const MilestoneCards: React.FC = () => {
     }
   };
   
-  const easeIn = cubicBezier(0.42, 0, 1, 1);
+    const easeIn = cubicBezier(0.42, 0, 1, 1);
   const easeOut = cubicBezier(0.25, 1, 0.5, 1);
   const easeInOut = cubicBezier(0.42, 0, 0.58, 1);
 

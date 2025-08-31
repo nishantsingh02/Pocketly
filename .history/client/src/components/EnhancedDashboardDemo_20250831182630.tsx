@@ -9,6 +9,7 @@ export const EnhancedDashboardDemo: React.FC = () => {
   const navigate = useNavigate();
 
 const easeOut = cubicBezier(0.25, 1, 0.5, 1);
+const easeInOut = cubicBezier(0.42, 0, 0.58, 1);
 
   const containerVariants = {
     hidden: { opacity: 0 },

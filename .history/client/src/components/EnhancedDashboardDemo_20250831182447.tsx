@@ -1,14 +1,39 @@
 import React from 'react';
-import { motion, cubicBezier  } from 'framer-motion';
-import { EnhancedDashboardCard } from './EnhancedDashboardCard';
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, Sparkles, Palette, BarChart3, Target, Award, Lightbulb } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { motion, cubicBezier } from 'framer-motion';
+import { Plus, CheckCircle, Edit, Trash2, ChevronRight, Target, Trophy, ArrowLeft, Sparkles, Palette, BarChart3, Award, Lightbulb } from 'lucide-react';
+
+// Mocking external dependencies to make this component self-contained.
+// In a real application, you would import these from your project files.
+const useNavigate = () => {
+    return (path) => console.log(`Navigating to: ${path}`);
+};
+
+const EnhancedDashboardCard = ({ type, title, theme }) => {
+  return (
+    <div className="p-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-700">
+      <h3 className="text-xl font-bold mb-2">{title}</h3>
+      <p>Card Type: {type}, Theme: {theme}</p>
+    </div>
+  );
+};
+
+const Button = ({ children, onClick, className, variant, size }) => {
+  return (
+    <button
+      onClick={onClick}
+      className={`px-4 py-2 rounded-lg font-semibold transition-colors duration-200 ${className}`}
+    >
+      {children}
+    </button>
+  );
+};
 
 export const EnhancedDashboardDemo: React.FC = () => {
   const navigate = useNavigate();
-
-const easeOut = cubicBezier(0.25, 1, 0.5, 1);
+  
+  // Define the easing function using cubicBezier
+  const easeOut = cubicBezier(0.25, 1, 0.5, 1);
+  const easeInOut = cubicBezier(0.42, 0, 0.58, 1);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -29,7 +54,7 @@ const easeOut = cubicBezier(0.25, 1, 0.5, 1);
       scale: 1,
       transition: {
         duration: 0.6,
-        ease: easeOut
+        ease: easeOut // Corrected easing value
       }
     }
   };
@@ -37,7 +62,7 @@ const easeOut = cubicBezier(0.25, 1, 0.5, 1);
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900">
       {/* Header */}
-      <motion.header 
+      <motion.header
         className="sticky top-0 z-50 w-full py-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-700"
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -59,7 +84,7 @@ const easeOut = cubicBezier(0.25, 1, 0.5, 1);
                   <span>Back</span>
                 </Button>
               </motion.div>
-              
+
               <div className="flex items-center space-x-2">
                 <div className="h-8 w-8 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-lg flex items-center justify-center">
                   <Sparkles className="h-5 w-5 text-white" />
@@ -69,7 +94,7 @@ const easeOut = cubicBezier(0.25, 1, 0.5, 1);
                 </span>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-2 text-sm text-slate-500 dark:text-slate-400">
               <Palette className="h-4 w-4" />
               <span>Interactive Themes</span>
@@ -79,18 +104,18 @@ const easeOut = cubicBezier(0.25, 1, 0.5, 1);
       </motion.header>
 
       {/* Main Content */}
-      <motion.main 
+      <motion.main
         className="max-w-7xl mx-auto px-6 py-8"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         {/* Introduction Section */}
-        <motion.div 
+        <motion.div
           className="text-center mb-12"
           variants={itemVariants}
         >
-          <motion.h1 
+          <motion.h1
             className="text-4xl md:text-5xl font-bold mb-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -100,20 +125,20 @@ const easeOut = cubicBezier(0.25, 1, 0.5, 1);
               Enhanced Dashboard Cards
             </span>
           </motion.h1>
-          
-          <motion.p 
+
+          <motion.p
             className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
           >
-            Experience the power of animated charts, progress animations, custom themes, and achievement badges. 
+            Experience the power of animated charts, progress animations, custom themes, and achievement badges.
             Each card is fully interactive and showcases advanced UI/UX techniques.
           </motion.p>
         </motion.div>
 
         {/* Feature Highlights */}
-        <motion.div 
+        <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"
           variants={itemVariants}
         >
@@ -182,35 +207,35 @@ const easeOut = cubicBezier(0.25, 1, 0.5, 1);
         </div>
 
         {/* Interactive Demo Section */}
-        <motion.div 
+        <motion.div
           className="mt-16 text-center"
           variants={itemVariants}
         >
           <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-700 p-8">
             <motion.div
               className="h-16 w-16 bg-gradient-to-r from-purple-400 to-pink-400 rounded-2xl flex items-center justify-center mx-auto mb-6"
-              animate={{ 
+              animate={{
                 rotate: [0, 5, -5, 0],
                 scale: [1, 1.1, 1]
               }}
-              transition={{ 
-                duration: 3, 
-                repeat: Infinity, 
-                ease: "easeInOut" 
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: easeInOut // Corrected easing value
               }}
             >
               <Lightbulb className="h-8 w-8 text-white" />
             </motion.div>
-            
+
             <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-200 mb-4">
               Try It Out!
             </h3>
-            
+
             <p className="text-slate-600 dark:text-slate-300 mb-6 max-w-2xl mx-auto">
-              Click on the theme selector dots in each card header to switch between different color schemes. 
+              Click on the theme selector dots in each card header to switch between different color schemes.
               Each theme completely transforms the visual appearance while maintaining the same functionality.
             </p>
-            
+
             <div className="flex flex-wrap justify-center gap-4">
               {['default', 'ocean', 'sunset', 'forest', 'cosmic'].map((theme) => (
                 <motion.div
@@ -227,7 +252,7 @@ const easeOut = cubicBezier(0.25, 1, 0.5, 1);
         </motion.div>
 
         {/* Call to Action */}
-        <motion.div 
+        <motion.div
           className="mt-16 text-center"
           variants={itemVariants}
         >
@@ -239,12 +264,12 @@ const easeOut = cubicBezier(0.25, 1, 0.5, 1);
             <h3 className="text-2xl font-bold mb-4">
               Ready to Enhance Your Dashboard?
             </h3>
-            
+
             <p className="text-teal-100 mb-6 max-w-2xl mx-auto">
-              These enhanced cards can be easily integrated into your existing PocketGuard dashboard. 
+              These enhanced cards can be easily integrated into your existing PocketGuard dashboard.
               They provide engaging visual feedback and make financial data more accessible and fun to interact with.
             </p>
-            
+
             <div className="flex flex-wrap justify-center gap-4">
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
@@ -255,7 +280,7 @@ const easeOut = cubicBezier(0.25, 1, 0.5, 1);
                   View Dashboard
                 </Button>
               </motion.div>
-              
+
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
                   variant="outline"
@@ -273,3 +298,4 @@ const easeOut = cubicBezier(0.25, 1, 0.5, 1);
   );
 };
 
+export default EnhancedDashboardDemo;

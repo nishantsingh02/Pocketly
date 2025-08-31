@@ -8,7 +8,8 @@ import { useNavigate } from 'react-router-dom';
 export const EnhancedDashboardDemo: React.FC = () => {
   const navigate = useNavigate();
 
-const easeOut = cubicBezier(0.25, 1, 0.5, 1);
+  const easeOut = cubicBezier(0.25, 1, 0.5, 1);
+const easeInOut = cubicBezier(0.42, 0, 0.58, 1);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -29,7 +30,7 @@ const easeOut = cubicBezier(0.25, 1, 0.5, 1);
       scale: 1,
       transition: {
         duration: 0.6,
-        ease: easeOut
+        ease: "easeOut"
       }
     }
   };

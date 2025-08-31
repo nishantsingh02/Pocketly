@@ -6,7 +6,7 @@ import {
   Award, 
   Star, 
   Zap, 
-  // Shield, 
+  Shield, 
   DollarSign,
   // Calendar,
   BarChart3,
@@ -81,7 +81,7 @@ const achievements = [
 export const EnhancedDashboardCard: React.FC<EnhancedDashboardCardProps> = ({
   type,
   title,
-  // data,
+  data,
   theme = 'default'
 }) => {
   const [currentTheme, setCurrentTheme] = useState(theme);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence, cubicBezier } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Plus, CheckCircle, Edit, Trash2, ChevronRight, Target, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "../contexts/AuthContext";
@@ -112,56 +112,52 @@ export const MilestoneCards: React.FC = () => {
       }
     }
   };
-  
-  const easeIn = cubicBezier(0.42, 0, 1, 1);
-  const easeOut = cubicBezier(0.25, 1, 0.5, 1);
-  const easeInOut = cubicBezier(0.42, 0, 0.58, 1);
 
   const cardVariants = {
-  hidden: { opacity: 0, y: 20, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.5,
-      ease: easeOut // Use the variable here
+    hidden: { opacity: 0, y: 20, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    },
+    hover: {
+      y: -8,
+      scale: 1.02,
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut"
+      }
+    },
+    tap: {
+      scale: 0.98
     }
-  },
-  hover: {
-    y: -8,
-    scale: 1.02,
-    transition: {
-      duration: 0.3,
-      ease: easeInOut // Use the variable here
-    }
-  },
-  tap: {
-    scale: 0.98
-  }
-};
+  };
 
-const formVariants = {
-  hidden: { opacity: 0, height: 0, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    height: "auto",
-    scale: 1,
-    transition: {
-      duration: 0.4,
-      ease: easeOut // Use the variable here
+  const formVariants = {
+    hidden: { opacity: 0, height: 0, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      height: "auto",
+      scale: 1,
+      transition: {
+        duration: 0.4,
+        ease: "easeOut"
+      }
+    },
+    exit: {
+      opacity: 0,
+      height: 0,
+      scale: 0.95,
+      transition: {
+        duration: 0.3,
+        ease: "easeIn"
+      }
     }
-  },
-  exit: {
-    opacity: 0,
-    height: 0,
-    scale: 0.95,
-    transition: {
-      duration: 0.3,
-      ease: easeIn // Use the variable here
-    }
-  }
-};
+  };
 
   if (!isAuthenticated) {
     return null;

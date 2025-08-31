@@ -5,16 +5,12 @@ import { CreateContentModel } from "./CreateContentModel";
 import { useAuth } from "../contexts/AuthContext";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import logo from "../assets/logo.svg";
-import { motion, cubicBezier } from "framer-motion";
+import { motion } from "framer-motion";
 
 export default function DashboardHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const { isAuthenticated, user, logout } = useAuth();
-  const { isAuthenticated, logout } = useAuth();
-
-  const easeOut = cubicBezier(0.25, 1, 0.5, 1);
-  const easeInOut = cubicBezier(0.42, 0, 0.58, 1);
+  const { isAuthenticated, user, logout } = useAuth();
 
   const buttonVariants = {
     initial: { scale: 1, rotate: 0 },
@@ -55,7 +51,7 @@ export default function DashboardHeader() {
       transition: { 
         duration: 3, 
         repeat: Infinity, 
-        ease: easeInOut
+        ease: "easeInOut" 
       }
     }
   };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, cubicBezier  } from 'framer-motion';
+import { motion, cubicBezier } from 'framer-motion';
 import { EnhancedDashboardCard } from './EnhancedDashboardCard';
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Sparkles, Palette, BarChart3, Target, Award, Lightbulb } from 'lucide-react';
@@ -7,8 +7,6 @@ import { useNavigate } from 'react-router-dom';
 
 export const EnhancedDashboardDemo: React.FC = () => {
   const navigate = useNavigate();
-
-const easeOut = cubicBezier(0.25, 1, 0.5, 1);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -29,7 +27,7 @@ const easeOut = cubicBezier(0.25, 1, 0.5, 1);
       scale: 1,
       transition: {
         duration: 0.6,
-        ease: easeOut
+        ease: "easeOut"
       }
     }
   };

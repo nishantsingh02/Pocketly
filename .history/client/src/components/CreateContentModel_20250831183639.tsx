@@ -25,6 +25,8 @@ export function CreateContentModel({ open, onClose }: CreateContentModelProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
+
+const easeIn = cubicBezier(0.42, 0, 1, 1);
 const easeOut = cubicBezier(0.25, 1, 0.5, 1);
 
   const modalVariants = {

@@ -6,7 +6,7 @@ import axios from 'axios';
 import Calender from "./Calender";
 import { useAuth } from "../contexts/AuthContext";
 import { Transaction } from '../types';
-import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
+import { motion, AnimatePresence,  } from 'framer-motion';
 import { Plus, DollarSign, Calendar, Tag, Sparkles } from 'lucide-react';
 
 const Backend_url = import.meta.env.VITE_PRODUCTION_BACKEND_URL;
@@ -25,7 +25,10 @@ export function CreateContentModel({ open, onClose }: CreateContentModelProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
+
+const easeIn = cubicBezier(0.42, 0, 1, 1);
 const easeOut = cubicBezier(0.25, 1, 0.5, 1);
+const easeInOut = cubicBezier(0.42, 0, 0.58, 1);
 
   const modalVariants = {
     hidden: { 

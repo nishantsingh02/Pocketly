@@ -1,32 +1,140 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence, cubicBezier } from "framer-motion";
 import { Plus, CheckCircle, Edit, Trash2, ChevronRight, Target, Trophy } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useAuth } from "../contexts/AuthContext";
-import { getMilestones, createMilestone, markAsCompleted, deleteMilestone, editMilestone } from "../config/milestoneApi";
 
-type Milestone = {
-  id: number;
-  task: string;
-  reward: string;
-  completed: boolean;
+// Mocking the external dependencies to make this component self-contained
+const useAuth = () => {
+  // In a real app, this would get authentication state from Firebase, etc.
+  // We'll mock a logged-in user for the purpose of this example.
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [user, setUser] = useState({ id: "mock-user-123" });
+  return { isAuthenticated, user };
 };
 
-export const MilestoneCards: React.FC = () => {
+const Button = ({ children, onClick, className, variant, size }) => {
+  return (
+    <button
+      onClick={onClick}
+      className={`px-4 py-2 rounded-lg font-semibold transition-colors duration-200 ${className}`}
+    >
+      {children}
+    </button>
+  );
+};
+
+const MilestoneCards = () => {
   const { isAuthenticated, user } = useAuth();
-  const [milestones, setMilestones] = useState<Milestone[]>([]);
+  const [milestones, setMilestones] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [task, setTask] = useState("");
   const [reward, setReward] = useState("");
   const [visibleCount, setVisibleCount] = useState(3);
-  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editingId, setEditingId] = useState(null);
 
-  // Fetch milestones on mount
+  // Define the easing functions as cubic bezier curves to fix the type errors
+  const easeIn = cubicBezier(0.42, 0, 1, 1);
+  const easeOut = cubicBezier(0.25, 1, 0.5, 1);
+  const easeInOut = cubicBezier(0.42, 0, 0.58, 1);
+
+  // Define the variants here, after the easing functions are defined
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        ease: easeOut
+      }
+    },
+    hover: {
+      y: -8,
+      scale: 1.02,
+      transition: {
+        duration: 0.3,
+        ease: easeInOut
+      }
+    },
+    tap: {
+      scale: 0.98
+    }
+  };
+
+  const formVariants = {
+    hidden: { opacity: 0, height: 0, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      height: "auto",
+      scale: 1,
+      transition: {
+        duration: 0.4,
+        ease: easeOut
+      }
+    },
+    exit: {
+      opacity: 0,
+      height: 0,
+      scale: 0.95,
+      transition: {
+        duration: 0.3,
+        ease: easeIn
+      }
+    }
+  };
+
+  // Mock API functions using local state
+  const getMilestones = async (userId) => {
+    return milestones;
+  };
+
+  const createMilestone = async (userId, task, reward) => {
+    const newId = (Math.random() * 10000).toFixed(0);
+    const newMilestone = { id: newId, task, reward, completed: false };
+    setMilestones(prev => [...prev, newMilestone]);
+    return newMilestone;
+  };
+
+  const markAsCompleted = async (id) => {
+    const updated = milestones.find(m => m.id === id);
+    if (updated) {
+      updated.completed = true;
+      setMilestones(prev => [...prev.filter(m => m.id !== id), updated]);
+      return updated;
+    }
+  };
+
+  const deleteMilestone = async (id) => {
+    setMilestones(prev => prev.filter(m => m.id !== id));
+  };
+
+  const editMilestone = async (id, newTask, newReward) => {
+    const updated = milestones.find(m => m.id === id);
+    if (updated) {
+      updated.task = newTask;
+      updated.reward = newReward;
+      setMilestones(prev => [...prev.filter(m => m.id !== id), updated]);
+      return updated;
+    }
+  };
+
+
   useEffect(() => {
     const fetchMilestones = async () => {
-      if (!user) return;  // Wait for user to be available
+      if (!user) return;
       try {
-        const data = await getMilestones(user.id.toString()) as Milestone[];
+        const data = await getMilestones(user.id);
         setMilestones(data);
       } catch (error) {
         console.error("Failed to fetch milestones", error);
@@ -38,8 +146,8 @@ export const MilestoneCards: React.FC = () => {
   const addMilestone = async () => {
     if (!task.trim() || !reward.trim() || !user) return;
     try {
-      const newMilestone = await createMilestone(user.id.toString(), task, reward) as Milestone;
-      setMilestones((prev: Milestone[]) => [...prev, newMilestone]);
+      const newMilestone = await createMilestone(user.id, task, reward);
+      setMilestones((prev) => [...prev, newMilestone]);
       setTask("");
       setReward("");
       setShowForm(false);
@@ -48,9 +156,9 @@ export const MilestoneCards: React.FC = () => {
     }
   };
 
-  const handleMarkCompleted = async (id: number) => {
+  const handleMarkCompleted = async (id) => {
     try {
-      const updatedMilestone = await markAsCompleted(id) as Milestone;  // Explicitly cast to Milestone type
+      const updatedMilestone = await markAsCompleted(id);
       setMilestones((prev) =>
         prev.map((m) => (m.id === id ? updatedMilestone : m))
       );
@@ -58,9 +166,8 @@ export const MilestoneCards: React.FC = () => {
       console.error("Failed to mark milestone as completed:", error);
     }
   };
-  
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id) => {
     try {
       await deleteMilestone(id);
       setMilestones((prev) => prev.filter((milestone) => milestone.id !== id));
@@ -69,7 +176,7 @@ export const MilestoneCards: React.FC = () => {
     }
   };
 
-  const startEdit = (milestone: Milestone) => {
+  const startEdit = (milestone) => {
     setEditingId(milestone.id);
     setTask(milestone.task);
     setReward(milestone.reward);
@@ -78,9 +185,8 @@ export const MilestoneCards: React.FC = () => {
 
   const handleEdit = async () => {
     if (!task.trim() || !reward.trim() || editingId === null) return;
-    
     try {
-      const updatedMilestone = await editMilestone(editingId, task, reward) as Milestone;
+      const updatedMilestone = await editMilestone(editingId, task, reward);
       setMilestones((prev) =>
         prev.map((milestone) =>
           milestone.id === editingId ? { ...milestone, task: updatedMilestone.task, reward: updatedMilestone.reward } : milestone
@@ -101,67 +207,6 @@ export const MilestoneCards: React.FC = () => {
     setReward("");
     setEditingId(null);
   };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
-  };
-  
-  const easeIn = cubicBezier(0.42, 0, 1, 1);
-  const easeOut = cubicBezier(0.25, 1, 0.5, 1);
-  const easeInOut = cubicBezier(0.42, 0, 0.58, 1);
-
-  const cardVariants = {
-  hidden: { opacity: 0, y: 20, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.5,
-      ease: easeOut // Use the variable here
-    }
-  },
-  hover: {
-    y: -8,
-    scale: 1.02,
-    transition: {
-      duration: 0.3,
-      ease: easeInOut // Use the variable here
-    }
-  },
-  tap: {
-    scale: 0.98
-  }
-};
-
-const formVariants = {
-  hidden: { opacity: 0, height: 0, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    height: "auto",
-    scale: 1,
-    transition: {
-      duration: 0.4,
-      ease: easeOut // Use the variable here
-    }
-  },
-  exit: {
-    opacity: 0,
-    height: 0,
-    scale: 0.95,
-    transition: {
-      duration: 0.3,
-      ease: easeIn // Use the variable here
-    }
-  }
-};
 
   if (!isAuthenticated) {
     return null;
@@ -187,13 +232,13 @@ const formVariants = {
           <div>
             <h2 className="text-2xl font-bold bg-gradient-to-r from-slate-900 via-purple-800 to-pink-700 dark:from-white dark:via-purple-200 dark:to-pink-300 bg-clip-text text-transparent">
               Milestones & Goals
-        </h2>
+            </h2>
             <p className="text-sm text-muted-foreground">
               Track your progress and celebrate achievements
             </p>
           </div>
         </div>
-        
+
         <motion.div
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -203,14 +248,14 @@ const formVariants = {
             className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
           >
             <Plus className="h-4 w-4 mr-2" />
-          Add Milestone
-        </Button>
+            Add Milestone
+          </Button>
         </motion.div>
       </motion.div>
 
       {/* Add/Edit Form */}
       <AnimatePresence>
-      {showForm && (
+        {showForm && (
           <motion.div
             variants={formVariants}
             initial="hidden"
@@ -219,29 +264,29 @@ const formVariants = {
             className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl rounded-xl p-6 shadow-xl border border-purple-100 dark:border-purple-800"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div>
+              <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Task
-              </label>
-              <input
-                type="text"
-                value={task}
-                onChange={(e) => setTask(e.target.value)}
+                  Task
+                </label>
+                <input
+                  type="text"
+                  value={task}
+                  onChange={(e) => setTask(e.target.value)}
                   placeholder="What do you want to achieve?"
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-slate-700 dark:text-white transition-all duration-200"
-              />
-            </div>
-            <div>
+                />
+              </div>
+              <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Reward
-              </label>
-              <input
-                type="text"
-                value={reward}
-                onChange={(e) => setReward(e.target.value)}
+                  Reward
+                </label>
+                <input
+                  type="text"
+                  value={reward}
+                  onChange={(e) => setReward(e.target.value)}
                   placeholder="What's your reward?"
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-slate-700 dark:text-white transition-all duration-200"
-              />
+                />
               </div>
             </div>
             <div className="flex space-x-3">
@@ -249,7 +294,7 @@ const formVariants = {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-              <Button 
+                <Button
                   onClick={editingId ? handleEdit : addMilestone}
                   className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
                 >
@@ -260,35 +305,35 @@ const formVariants = {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-              <Button 
-                variant="outline" 
-                onClick={handleCancel}
+                <Button
+                  variant="outline"
+                  onClick={handleCancel}
                   className="hover:bg-gray-50 dark:hover:bg-slate-700"
-              >
-                Cancel
-              </Button>
+                >
+                  Cancel
+                </Button>
               </motion.div>
             </div>
           </motion.div>
-      )}
+        )}
       </AnimatePresence>
 
       {/* Milestones Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {milestones.slice(0, visibleCount).map((milestone, index) => (
           <motion.div
-                key={milestone.id}
+            key={milestone.id}
             variants={cardVariants}
             whileHover="hover"
             whileTap="tap"
             custom={index}
           >
             <div className={`relative group cursor-pointer transition-all duration-300 ${
-                  milestone.completed
-                ? 'bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border-emerald-200 dark:border-emerald-700' 
+              milestone.completed
+                ? 'bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border-emerald-200 dark:border-emerald-700'
                 : 'bg-white/90 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-800 border-gray-200 dark:border-gray-700'
             } border rounded-xl p-6 shadow-lg hover:shadow-xl backdrop-blur-xl`}>
-              
+
               {/* Completion Status */}
               <div className="absolute top-4 right-4">
                 {milestone.completed ? (
@@ -314,21 +359,21 @@ const formVariants = {
 
               {/* Content */}
               <div className="mb-4">
-                <motion.h3 
+                <motion.h3
                   className={`text-lg font-semibold mb-2 ${
-                    milestone.completed 
-                      ? 'text-emerald-700 dark:text-emerald-300 line-through' 
+                    milestone.completed
+                      ? 'text-emerald-700 dark:text-emerald-300 line-through'
                       : 'text-gray-900 dark:text-white'
                   }`}
                   whileHover={{ x: 5 }}
                   transition={{ duration: 0.2 }}
                 >
-                    {milestone.task}
+                  {milestone.task}
                 </motion.h3>
-                <motion.p 
+                <motion.p
                   className={`text-sm ${
-                    milestone.completed 
-                      ? 'text-emerald-600 dark:text-emerald-400' 
+                    milestone.completed
+                      ? 'text-emerald-600 dark:text-emerald-400'
                       : 'text-gray-600 dark:text-gray-400'
                   }`}
                   whileHover={{ x: 5 }}
@@ -336,18 +381,18 @@ const formVariants = {
                 >
                   Reward: {milestone.reward}
                 </motion.p>
-                </div>
-                
+              </div>
+
               {/* Actions */}
-                    {!milestone.completed && (
+              {!milestone.completed && (
                 <div className="flex space-x-2">
                   <motion.div
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <Button 
+                    <Button
                       variant="outline"
-                      size="sm" 
+                      size="sm"
                       onClick={() => startEdit(milestone)}
                       className="text-xs hover:bg-blue-50 hover:border-blue-300 transition-colors"
                     >
@@ -359,9 +404,9 @@ const formVariants = {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <Button 
+                    <Button
                       variant="outline"
-                      size="sm" 
+                      size="sm"
                       onClick={() => handleDelete(milestone.id)}
                       className="text-xs hover:bg-red-50 hover:border-red-300 hover:text-red-600 transition-colors"
                     >
@@ -381,11 +426,11 @@ const formVariants = {
                   transition={{ duration: 0.5 }}
                 />
               )}
-              </div>
+            </div>
           </motion.div>
-            ))}
-          </div>
-          
+        ))}
+      </div>
+
       {/* Show More Button */}
       {milestones.length > visibleCount && (
         <motion.div
@@ -398,13 +443,13 @@ const formVariants = {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-              <Button 
-                variant="outline" 
+            <Button
+              variant="outline"
               onClick={() => setVisibleCount(prev => prev + 3)}
               className="hover:bg-purple-50 hover:border-purple-300 hover:text-purple-600 transition-colors"
-              >
+            >
               Show More <ChevronRight className="h-4 w-4 ml-2" />
-              </Button>
+            </Button>
           </motion.div>
         </motion.div>
       )}
@@ -447,3 +492,5 @@ const formVariants = {
     </motion.div>
   );
 };
+
+export default MilestoneCards;
