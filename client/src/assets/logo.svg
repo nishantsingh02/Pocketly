@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1e293b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#475569;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Logo Container -->
+  <rect x="10" y="10" width="380" height="100" rx="20" fill="url(#bgGradient)" opacity="0.1"/>
+  
+  <!-- Pocket Icon -->
+  <g transform="translate(30, 35)">
+    <!-- Pocket Shape -->
+    <path d="M0,0 L40,0 C45,0 50,5 50,10 L50,30 C50,35 45,40 40,40 L0,40 L0,0 Z" 
+          fill="url(#bgGradient)" stroke="url(#bgGradient)" stroke-width="2"/>
+    
+    <!-- Pocket Opening -->
+    <path d="M5,5 L35,5 C37.5,5 40,7.5 40,10 L40,25 C40,27.5 37.5,30 35,30 L5,30 L5,5 Z" 
+          fill="white" opacity="0.9"/>
+    
+    <!-- Money/Coins -->
+    <circle cx="15" cy="17.5" r="3" fill="#fbbf24"/>
+    <circle cx="25" cy="17.5" r="3" fill="#f59e0b"/>
+    <circle cx="20" cy="22.5" r="2.5" fill="#d97706"/>
+    
+    <!-- Shield/Guard Element -->
+    <path d="M45,15 L55,15 L55,25 L50,30 L45,25 Z" 
+          fill="#10b981" stroke="#059669" stroke-width="1"/>
+    <path d="M47,17 L53,17 L53,23 L50,26 L47,23 Z" 
+          fill="white" opacity="0.9"/>
+  </g>
+  
+  <!-- Text: PocketGuard -->
+  <g transform="translate(100, 35)">
+    <text x="0" y="0" font-family="Arial, sans-serif" font-weight="800" font-size="28" fill="url(#textGradient)">
+      <tspan fill="url(#bgGradient)">Pocket</tspan><tspan>Guard</tspan>
+    </text>
+    
+    <!-- Tagline -->
+    <text x="0" y="25" font-family="Arial, sans-serif" font-weight="400" font-size="12" fill="#64748b">
+      Smart Finance Management
+    </text>
+  </g>
+  
+  <!-- Decorative Elements -->
+  <g opacity="0.3">
+    <circle cx="350" cy="30" r="8" fill="url(#bgGradient)"/>
+    <circle cx="360" cy="80" r="6" fill="url(#bgGradient)"/>
+    <circle cx="340" cy="90" r="4" fill="url(#bgGradient)"/>
+  </g>
+</svg>
