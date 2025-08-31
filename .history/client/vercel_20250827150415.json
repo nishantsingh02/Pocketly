@@ -3,7 +3,7 @@
       { "source": "/(.*)", "destination": "/index.html" }
     ],
   
-  "buildCommand": "npm run build",
+  "buildCommand": "cd client && npm install && npm run build",
   "outputDirectory": "client/dist",
-  "installCommand": "npm install"
+  "installCommand": "npm install && cd client && npm install"
 }
