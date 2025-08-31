@@ -12,11 +12,8 @@ dotenv.config();
 
 const app = express();
 const allowedOrigins = [
-  "https://personal-expense-tracker-kohl.vercel.app",
-  "https://personal-expense-tracker-xi.vercel.app",
-  "http://localhost:3000",
-  "http://localhost:5173",
-  "https://100xpay.vercel.app"
+  "https://pocketly-mauve.vercel.app/",
+  "https://pocketly-server.vercel.app/"
 ];
 
 // Middleware
