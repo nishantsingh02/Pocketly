@@ -207,9 +207,9 @@ const Dashboard: React.FC = () => {
                   </ul>
                 </CardContent>
                 <CardFooter>
-                  <a href="https://x.com/nishantsingh211">
+                  <a href="https://righteous-shape-20e.notion.site/Hi-User-1e34aff4282180b2ad58dd0d1bc6d63f">
                     <Button className="w-full bg-white text-indigo-600 hover:bg-indigo-50">
-                      Join the journey
+                      Click Here To Know More !
                     </Button>
                   </a>
                 </CardFooter>

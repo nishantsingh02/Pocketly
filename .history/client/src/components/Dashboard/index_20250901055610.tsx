@@ -209,7 +209,7 @@ const Dashboard: React.FC = () => {
                 <CardFooter>
                   <a href="https://x.com/nishantsingh211">
                     <Button className="w-full bg-white text-indigo-600 hover:bg-indigo-50">
-                      Join the journey
+                      Click Here To Know More !
                     </Button>
                   </a>
                 </CardFooter>

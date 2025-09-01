@@ -198,18 +198,18 @@ const Dashboard: React.FC = () => {
                     </li>
                     <li className="flex items-center">
                       <ArrowUpRight className="mr-2 h-4 w-4" />
-                      <span> Smart budget optimization tips</span>
+                      <span>Advanced budget planning</span>
                     </li>
                     <li className="flex items-center">
                       <ArrowUpRight className="mr-2 h-4 w-4" />
-                      <span>Investment strategy suggestions</span>
+                      <span>Investment insights</span>
                     </li>
                   </ul>
                 </CardContent>
                 <CardFooter>
-                  <a href="https://x.com/nishantsingh211">
+                  <a href="https://righteous-shape-20e.notion.site/Hi-User-1e34aff4282180b2ad58dd0d1bc6d63f">
                     <Button className="w-full bg-white text-indigo-600 hover:bg-indigo-50">
-                      Join the journey
+                      Click Here To Know More !
                     </Button>
                   </a>
                 </CardFooter>
